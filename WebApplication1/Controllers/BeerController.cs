@@ -42,7 +42,6 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<BeerDto>> GetByName(string name)
         {
             var beerDto = await _beerService.GetByName(name);
-            
             return beerDto == null ? NotFound() : Ok(beerDto);
         }
 
