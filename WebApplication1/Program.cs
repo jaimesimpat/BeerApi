@@ -1,4 +1,5 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Automappers;
 using WebApplication1.DTOs;
@@ -19,13 +20,17 @@ builder.Services.AddSwaggerGen();
 //Services
 builder.Services.AddKeyedScoped<ICommonService<BeerDto, BeerInsertDto, BeerUpdateDto>, BeerService>("beerService");
 
+// Add MediatR here (between Services and Repository)
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 // Entity Framework config
 builder.Services.AddDbContext<StoreContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
 });
 
-//Repositoryies
+//Repositories
 builder.Services.AddScoped<IRepository<Beer>, BeerRepository>();
 
 //Validators
