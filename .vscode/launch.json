@@ -28,6 +28,27 @@
             }
         },
         {
+            "name": ".NET Core Launch (web - Release)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-release",
+            "program": "${workspaceFolder}/WebApplication1/bin/Release/net8.0/WebApplication1.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/WebApplication1",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+            "action": "openExternally",
+            "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+                "uriFormat": "%s/swagger"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"

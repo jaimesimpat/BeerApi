@@ -14,14 +14,41 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build-release",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+            "build",
+            "${workspaceFolder}/WebApplication1.sln",
+            "--configuration",
+            "Release",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "publish",
             "command": "dotnet",
             "type": "process",
             "args": [
+            "publish",
+            "${workspaceFolder}/WebApplication1.sln",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-release",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
                 "publish",
-                "${workspaceFolder}/WebApplication1.sln",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+                "--configuration",
+                "Release",
+                "--output",
+                "${workspaceFolder}/publish"
             ],
             "problemMatcher": "$msCompile"
         },
