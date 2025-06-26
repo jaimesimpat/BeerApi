@@ -18,7 +18,7 @@
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
-                "uriFormat": "%s/swagger"
+                "uriFormat": "%s"
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
@@ -37,9 +37,9 @@
             "cwd": "${workspaceFolder}/WebApplication1",
             "stopAtEntry": false,
             "serverReadyAction": {
-            "action": "openExternally",
-            "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
-                "uriFormat": "%s/swagger"
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+                "uriFormat": "%s"
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"

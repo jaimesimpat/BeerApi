@@ -1,6 +1,8 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using WebApplication1.Automappers;
 using WebApplication1.DTOs;
 using WebApplication1.Models;

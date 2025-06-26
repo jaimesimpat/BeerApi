@@ -9,7 +9,9 @@
                 "build",
                 "${workspaceFolder}/WebApplication1.sln",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+                "/consoleloggerparameters:NoSummary;ForceNoAlign",
+                "--force",
+                "--no-cache"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -23,7 +25,7 @@
             "--configuration",
             "Release",
             "/property:GenerateFullPaths=true",
-            "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            "/consoleloggerparameters:NoSummary;ForceNoAlign",
             ],
             "problemMatcher": "$msCompile"
         },
@@ -40,15 +42,16 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-release",
+            "label": "publish-release", //Azure Compilation Release
             "command": "dotnet",
             "type": "process",
             "args": [
                 "publish",
+                "${workspaceFolder}/WebApplication1/WebApplication1.csproj",
                 "--configuration",
                 "Release",
                 "--output",
-                "${workspaceFolder}/publish"
+                "${workspaceFolder}/WebApplication1/bin/Release/net8.0/publish",
             ],
             "problemMatcher": "$msCompile"
         },
