@@ -6,7 +6,7 @@ namespace WebApplication1.Repository
     public interface IRepository<TEntity>
     {
         Task<IEnumerable<TEntity>> Get();
-        Task<TEntity> GetById(int id);
+        Task<TEntity?> GetById(int id);
         Task Add(TEntity entity);
         void Update(TEntity entity);
         Task Save();
@@ -24,10 +24,10 @@ namespace WebApplication1.Repository
         }
 
         public async Task<IEnumerable<Beer>> Get() =>
-            await _context.Beers.ToListAsync();
+            await _context.Beers.Include(b => b.Brand).ToListAsync();
 
-        public async Task<Beer> GetById(int id) =>
-            await _context.Beers.FindAsync(id);
+        public async Task<Beer?> GetById(int id) =>
+            await _context.Beers.Include(b => b.Brand).FirstOrDefaultAsync(b => b.BeerID == id);
 
         public async Task Add(Beer beer)
             => await _context.Beers.AddAsync(beer);
@@ -42,7 +42,7 @@ namespace WebApplication1.Repository
             => await _context.SaveChangesAsync();
 
         public IEnumerable<Beer> Search(Func<Beer, bool> filter)
-            => _context.Beers.Where(filter).ToList();
+            => _context.Beers.Include(b => b.Brand).Where(filter).ToList();
 
         public async Task Remove(int id)
         {

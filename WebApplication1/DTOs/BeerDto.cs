@@ -10,5 +10,7 @@ namespace WebApplication1.DTOs
         public decimal Alcohol { get; set; }
         public BeerType BeerType { get; set; }
         public string BeerTypeText { get { return BeerType.ToString(); } }
+
+        public Brand Brand { get; set; }
     }
 }
