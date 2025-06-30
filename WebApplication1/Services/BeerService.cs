@@ -98,7 +98,7 @@ namespace WebApplication1.Services
 
         public bool Validate(BeerUpdateDto beerUpdateDto)
         {
-            if (_beerRepository.Search(b => b.Name == beerUpdateDto.Name && b.BeerID != beerUpdateDto.Id).Count() > 0)
+            if (_beerRepository.Search(b => b.Name == beerUpdateDto.Name && b.Id != beerUpdateDto.Id).Count() > 0)
             {
                 Errors.Add("No puede existir una cerveza con un nombre ya existente");
                 return false;

@@ -24,10 +24,17 @@ namespace WebApplication1.Repository
         }
 
         public async Task<IEnumerable<Beer>> Get() =>
-            await _context.Beers.Include(b => b.Brand).ToListAsync();
+            await _context.Beers
+                .Include(b => b.Brand).ToListAsync();
+
+        public async Task<IEnumerable<Beer>> GetRaw() =>
+            await _context.Beers.FromSqlInterpolated($"SELECT * FROM Beers WHERE IsDeleted = 0")
+                .Include(b => b.Brand)
+                .IgnoreQueryFilters()
+                .ToListAsync();
 
         public async Task<Beer?> GetById(int id) =>
-            await _context.Beers.Include(b => b.Brand).FirstOrDefaultAsync(b => b.BeerID == id);
+            await _context.Beers.Include(b => b.Brand).IgnoreQueryFilters().FirstOrDefaultAsync(b => b.Id == id);
 
         public async Task Add(Beer beer)
             => await _context.Beers.AddAsync(beer);
@@ -49,7 +56,8 @@ namespace WebApplication1.Repository
             var beer = await _context.Beers.FindAsync(id);
             if (beer != null)
             {
-                _context.Beers.Remove(beer);
+                beer.IsDeleted = true; // Soft delete
+                _context.Beers.Update(beer);
             }
         }
     }

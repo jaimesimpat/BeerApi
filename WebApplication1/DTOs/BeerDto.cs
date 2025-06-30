@@ -8,6 +8,7 @@ namespace WebApplication1.DTOs
         public string Name { get; set; }
         public int BrandID { get; set; }
         public decimal Alcohol { get; set; }
+        public bool IsDeleted { get; set; }
         public BeerType BeerType { get; set; }
         public string BeerTypeText { get { return BeerType.ToString(); } }
 

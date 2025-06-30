@@ -12,7 +12,7 @@ namespace WebApplication1.Automappers
             CreateMap<BeerUpdateDto, Beer>();
             CreateMap<Beer, BeerDto>()
                 .ForMember(dto => dto.Id,
-                            m => m.MapFrom(b => b.BeerID));
+                            m => m.MapFrom(b => b.Id));
         }
     }
 }

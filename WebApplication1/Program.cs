@@ -1,10 +1,9 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 using WebApplication1.Automappers;
 using WebApplication1.DTOs;
+using WebApplication1.Interceptors;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 using WebApplication1.Services;
@@ -30,6 +29,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddDbContext<StoreContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
+    options.AddInterceptors(new ReadInterceptor());
 });
 
 //Repositories
