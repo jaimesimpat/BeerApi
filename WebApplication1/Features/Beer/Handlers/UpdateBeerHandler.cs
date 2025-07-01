@@ -24,21 +24,21 @@ namespace WebApplication1.Features.Beer.Handlers
         public async Task<BeerDto> Handle(UpdateBeerCommand request, CancellationToken cancellationToken)
         {
             // Validate using FluentValidation
-            var validationResult = await _validator.ValidateAsync(request.BeerToUpdate, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request.beerToUpdate, cancellationToken);
             
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
             // Validate using business rules
-            if (!_beerService.Validate(request.BeerToUpdate))
+            if (!_beerService.Validate(request.beerToUpdate))
                 throw new ValidationException(_beerService.Errors.Select(e => 
                     new ValidationFailure(string.Empty, e)).ToList());
 
             // Update the beer
-            var beerDto = await _beerService.Update(request.Id, request.BeerToUpdate);
+            var beerDto = await _beerService.Update(request.id, request.beerToUpdate);
             
             if (beerDto == null)
-                throw new KeyNotFoundException($"Beer with ID {request.Id} not found");
+                throw new KeyNotFoundException($"Beer with ID {request.id} not found");
                 
             return beerDto;
         }

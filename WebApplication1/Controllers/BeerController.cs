@@ -38,15 +38,14 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BeerDto>> GetById(int id)
         {
-            var beerDto = await _mediator.Send(new GetBeerByIdQuery { Id = id });
-            
+            var beerDto = await _mediator.Send(new GetBeerByIdQuery(id));
             return beerDto == null ? NotFound() : Ok(beerDto);
         }
 
         [HttpGet("name/{name}")]
         public async Task<ActionResult<BeerDto>> GetByName(string name)
         {
-            var beerDto = await _mediator.Send(new GetBeerByNameQuery { Name = name });
+            var beerDto = await _mediator.Send(new GetBeerByNameQuery(name));
             return beerDto == null ? NotFound() : Ok(beerDto);
         }
 
@@ -55,7 +54,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var beerDto = await _mediator.Send(new CreateBeerCommand { BeerToCreate = beerInsertDto });
+                var beerDto = await _mediator.Send(new CreateBeerCommand(beerInsertDto));
                 return CreatedAtAction(nameof(GetById), new { id = beerDto.Id }, beerDto);
             }
             catch (ValidationException ex)
@@ -73,11 +72,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var beerDto = await _mediator.Send(new UpdateBeerCommand 
-                { 
-                    Id = id, 
-                    BeerToUpdate = beerUpdateDto 
-                });
+                var beerDto = await _mediator.Send(new UpdateBeerCommand(id, beerUpdateDto));
                 
                 return Ok(beerDto);
             }
@@ -100,7 +95,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                await _mediator.Send(new DeleteBeerCommand { Id = id });
+                await _mediator.Send(new DeleteBeerCommand(id));
                 return NoContent();
             }
             catch (KeyNotFoundException)

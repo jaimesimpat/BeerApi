@@ -17,7 +17,7 @@ namespace WebApplication1.Features.Beer.Handlers
 
         public async Task<BeerDto> Handle(GetBeerByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _beerService.GetById(request.Id);
+            return await _beerService.GetById(request.id);
         }
     }
 }

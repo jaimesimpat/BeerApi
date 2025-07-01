@@ -18,10 +18,10 @@ namespace WebApplication1.Features.Beer.Handlers
 
         public async Task<bool> Handle(DeleteBeerCommand request, CancellationToken cancellationToken)
         {
-            var removed = await _beerService.Remove(request.Id);
+            var removed = await _beerService.Remove(request.id);
             
             if (!removed)
-                throw new KeyNotFoundException($"Beer with ID {request.Id} not found");
+                throw new KeyNotFoundException($"Beer with ID {request.id} not found");
                 
             return true;
         }

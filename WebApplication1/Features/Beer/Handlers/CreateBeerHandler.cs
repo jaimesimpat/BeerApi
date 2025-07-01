@@ -24,18 +24,18 @@ namespace WebApplication1.Features.Beer.Handlers
         public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
         {
             // Validate using FluentValidation
-            var validationResult = await _validator.ValidateAsync(request.BeerToCreate, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request.beerInsertDto, cancellationToken);
             
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
             // Validate using business rules
-            if (!_beerService.Validate(request.BeerToCreate))
-                throw new ValidationException(_beerService.Errors.Select(e => 
+            if (!_beerService.Validate(request.beerInsertDto))
+                throw new ValidationException(_beerService.Errors.Select(e =>
                     new ValidationFailure(string.Empty, e)).ToList());
 
             // Add the beer
-            return await _beerService.Add(request.BeerToCreate);
+            return await _beerService.Add(request.beerInsertDto);
         }
     }
 }
