@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DTOs;
-using WebApplication1.Features.Beer.Commands;
-using WebApplication1.Features.Beer.Queries;
+using WebApplication1.CQRS.Beer.Commands;
+using WebApplication1.CQRS.Beer.Queries;
 using WebApplication1.Services;
 
 namespace WebApplication1.Controllers

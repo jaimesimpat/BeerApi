@@ -3,10 +3,10 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DTOs;
-using WebApplication1.Features.Beer.Commands;
+using WebApplication1.CQRS.Beer.Commands;
 using WebApplication1.Services;
 
-namespace WebApplication1.Features.Beer.Handlers
+namespace WebApplication1.CQRS.Beer.Handlers
 {
     public class UpdateBeerHandler : IRequestHandler<UpdateBeerCommand, BeerDto>
     {
