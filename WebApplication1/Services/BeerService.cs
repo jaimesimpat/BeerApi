@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DTOs;
@@ -24,29 +26,29 @@ namespace WebApplication1.Services
 
     public class BeerService : ICommonService<BeerDto, BeerInsertDto, BeerUpdateDto>
     {
-        private IRepository<Beer> _beerRepository;
         private IMapper _mapper;
+        private IMediator _mediator;
 
         public List<string> Errors { get; }
 
         public BeerService(
             IMapper maper,
-            IRepository<Beer> beerRepository)
+            IMediator mediator)
         {
-            _beerRepository = beerRepository;
             _mapper = maper;
+            _mediator = mediator;
             Errors = new List<string>();
         }
 
         public async Task<IEnumerable<BeerDto>> Get()
         {
-            var beers = await _beerRepository.Get();
+            var beers = await _mediator.Send(new BeerRepoGetRequest());
             return beers.Select(b => _mapper.Map<BeerDto>(b));
         }
 
         public async Task<BeerDto> GetById(int id)
         {
-            var beer = await _beerRepository.GetById(id);
+            var beer = await _mediator.Send(new BeerRepoGetByIdRequest(id));
 
             if (beer != null)
             {
@@ -60,9 +62,12 @@ namespace WebApplication1.Services
         public async Task<BeerDto> Add(BeerInsertDto beerInsertDto)
         {
             var beer = _mapper.Map<Beer>(beerInsertDto);
+            if (!Validate(beerInsertDto))
+            {
+                throw new ValidationException(Errors.First());
+            }
 
-            await _beerRepository.Add(beer);
-            await _beerRepository.Save();
+            await _mediator.Send(new BeerRepoAddRequest(beer));
 
             var beerDto = _mapper.Map<BeerDto>(beer);
 
@@ -71,13 +76,12 @@ namespace WebApplication1.Services
 
         public async Task<BeerDto> Update(int id, BeerUpdateDto beerUpdateDto)
         {
-            var beer = await _beerRepository.GetById(id);
+            var beer = await _mediator.Send(new BeerRepoGetByIdRequest(id));
 
             if (beer != null)
             {
                 _mapper.Map(beerUpdateDto, beer);
-                _beerRepository.Update(beer);
-                await _beerRepository.Save();
+                await _mediator.Send(new BeerRepoUpdateRequest(beer));
 
                 return _mapper.Map<BeerDto>(beer);
             }
@@ -87,7 +91,7 @@ namespace WebApplication1.Services
 
         public bool Validate(BeerInsertDto beerInsertDto)
         {
-            if (_beerRepository.Search(b => b.Name == beerInsertDto.Name).Count() > 0)
+            if (_mediator.Send(new BeerRepoValidateInsertRequest(b => b.Name == beerInsertDto.Name)).Result)
             {
                 Errors.Add("No puede existir una cerveza con un nombre ya existente");
                 return false;
@@ -98,7 +102,7 @@ namespace WebApplication1.Services
 
         public bool Validate(BeerUpdateDto beerUpdateDto)
         {
-            if (_beerRepository.Search(b => b.Name == beerUpdateDto.Name && b.Id != beerUpdateDto.Id).Count() > 0)
+            if (_mediator.Send(new BeerRepoValidateInsertRequest(b => b.Name == beerUpdateDto.Name && b.Id != beerUpdateDto.Id)).Result)
             {
                 Errors.Add("No puede existir una cerveza con un nombre ya existente");
                 return false;
@@ -109,17 +113,16 @@ namespace WebApplication1.Services
 
         public async Task<bool> Remove(int id)
         {
-            var beer = await _beerRepository.GetById(id);
+            var beer = await _mediator.Send(new BeerRepoGetByIdRequest(id));
             if (beer == null)
                 return false;
-            await _beerRepository.Remove(id);
-            await _beerRepository.Save();
+            await _mediator.Send(new BeerRepoRemoveRequest(id));
             return true;
         }
 
         public async Task<BeerDto> GetByName(string name)
         {
-            var beer = _beerRepository.Search(b => b.Name.Contains(name)).FirstOrDefault();
+            var beer = await _mediator.Send(new BeerRepoGetByNameRequest(name));
 
             if (beer != null)
             {

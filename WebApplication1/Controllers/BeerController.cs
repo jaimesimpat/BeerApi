@@ -15,18 +15,15 @@ namespace WebApplication1.Controllers
         private readonly IMediator _mediator;
         private readonly IValidator<BeerInsertDto> _beerInsertValidator;
         private readonly IValidator<BeerUpdateDto> _beerUpdateValidator;
-        private readonly ICommonService<BeerDto, BeerInsertDto, BeerUpdateDto> _beerService;
 
         public BeerController(
             IMediator mediator,
             IValidator<BeerInsertDto> beerInsertValidator,
-            IValidator<BeerUpdateDto> beerUpdateValidator,
-            [FromKeyedServices("beerService")] ICommonService<BeerDto, BeerInsertDto, BeerUpdateDto> beerService)
+            IValidator<BeerUpdateDto> beerUpdateValidator)
         {
             _mediator = mediator;
             _beerInsertValidator = beerInsertValidator;
             _beerUpdateValidator = beerUpdateValidator;
-            _beerService = beerService;
         }
 
         [HttpGet]
